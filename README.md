@@ -52,7 +52,7 @@ For each query we run three stages:
    path PPO-style clipped loss with independent normalization for unmodulated
    and modulated token sets.
 
-See [the paper](#citation) for derivations of (1)–(3) and ablations on each
+See the paper for derivations of (1)–(3) and ablations on each
 design choice.
 
 ## Methods supported in this repo
@@ -127,7 +127,6 @@ Training and eval parquets live at
 in one shot:
 
 ```bash
-# huggingface-cli login   # only if the HF repo is still private
 python scripts/download_data.py --all
 ```
 
@@ -176,12 +175,14 @@ Common environment overrides:
 
 ### Main results across model scales
 
-RLCSD attains the best result on **almost every benchmark across every model
-scale**. The gains over the Base model average **+4.3** (math) and **+10.9**
-(logic) at 1.7B; **+2.5** / **+6.8** at 4B; **+2.7** / **+14.4** at 8B. The
-advantage is especially pronounced on the OOD Knights & Knaves splits (**+21.0**
-on 11-role at 8B), suggesting the cleaned token-level signal improves
-generalization rather than just fitting the training task difficulty.
+RLCSD attains the strongest average performance in every model block and wins
+most individual benchmarks across Qwen3 scales and Olmo-3-7B. The gains over the
+Base model average **+4.3** (math) and **+10.9** (logic) at 1.7B; **+2.5** /
+**+6.8** at 4B; **+2.7** / **+14.4** at 8B; and **+1.8** / **+9.9** on
+Olmo-3-7B. The advantage is especially pronounced on the OOD Knights & Knaves
+splits (**+21.0** on 11-role at 8B; **+13.0** on 11-role with Olmo-3-7B),
+suggesting the cleaned token-level signal improves generalization rather than
+just fitting the training task difficulty.
 
 | Model       | Method          | AMC23 | AIME24 | AIME25 | Math Avg.       | KK 4–8 | KK 9 | KK 10 | KK 11 | Logic Avg.      |
 |-------------|-----------------|------:|-------:|-------:|----------------:|-------:|-----:|------:|------:|----------------:|
@@ -206,6 +207,13 @@ generalization rather than just fitting the training task difficulty.
 |             | SRPO            | 88.3  | 75.3   | 65.6   | 76.4            | 74.8   | 72.0 | 60.0  | 49.0  | 64.0            |
 |             | RLSD            | 88.7  | 75.5   | 67.2   | 77.1            | 76.6   | 77.0 | 64.0  | 52.0  | 67.4            |
 |             | **RLCSD (ours)**| **90.8** | **77.5** | **69.7** | **79.3** (+2.7) | **81.8** | **79.0** | **70.0** | **65.0** | **74.0** (+14.4) |
+| Olmo-3-7B   | Base            | 91.2  | 73.9   | 66.9   | 77.3            | 70.6   | 64.0 | 55.0  | 35.0  | 56.2            |
+|             | GRPO            | 92.4  | 75.8   | **68.9** | 79.0          | 73.8   | 69.0 | 63.0  | 39.0  | 61.2            |
+|             | OPSD            | 92.2  | 75.6   | 66.9   | 78.2            | 72.4   | 69.0 | 62.0  | 38.0  | 60.4            |
+|             | SDPO            | 91.6  | 74.2   | 67.4   | 77.7            | 73.2   | 67.0 | 59.0  | 46.0  | 61.3            |
+|             | SRPO            | 92.1  | 75.0   | 65.3   | 77.5            | 73.2   | 68.0 | 61.0  | 40.0  | 60.6            |
+|             | RLSD            | 92.6  | 74.7   | 66.9   | 78.1            | 73.8   | 65.0 | 61.0  | 38.0  | 59.4            |
+|             | **RLCSD (ours)**| **92.7** | **76.1** | 68.6 | **79.1** (+1.8) | **75.4** | **76.0** | **65.0** | **48.0** | **66.1** (+9.9) |
 
 Math is reported as **mean@12**; Knights & Knaves as **pass@1**. KK 4–8 is the
 in-distribution test set; 9 / 10 / 11 are out-of-distribution role counts.
@@ -296,10 +304,6 @@ RLCSD-specific extensions live in:
 If you use this code or the released RLCSD method, please cite:
 
 ```bibtex
-@article{pan2026rlcsd,
-  title  = {RLCSD: Reinforcement Learning with Contrastive On-Policy Self-Distillation},
-  author = {Pan, Leyi and Tao, Shuchang and Zhai, Yunpeng and Zhang, Lingzhe
-            and Liu, Zhaoyang and Ding, Bolin and Liu, Aiwei and Wen, Lijie},
-  year   = {2026}
-}
+
+
 ```
