@@ -2,7 +2,7 @@
 
 # RLCSD: Reinforcement Learning with Contrastive On-Policy Self-Distillation
 
-[![Paper](https://img.shields.io/badge/Paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.11709)  [![Training Dataset](https://img.shields.io/badge/Training--Dataset-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/Leyiii/RLCSD)
+[![Paper](https://img.shields.io/badge/Paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.11709)  [![Dataset](https://img.shields.io/badge/Dataset-%23FFD14D?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/Leyiii/RLCSD)
 
 </div>
 
