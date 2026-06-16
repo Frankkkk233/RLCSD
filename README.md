@@ -310,6 +310,10 @@ RLCSD-specific extensions live in:
 If you use this code or the released RLCSD method, please cite:
 
 ```bibtex
-
-
+@article{pan2026rlcsd,
+  title={RLCSD: Reinforcement Learning with Contrastive On-Policy Self-Distillation},
+  author={Pan, Leyi and Tao, Shuchang and Zhai, Yunpeng and Zhang, Lingzhe and Liu, Zhaoyang and Ding, Bolin and Liu, Aiwei and Wen, Lijie},
+  journal={arXiv preprint arXiv:2606.11709},
+  year={2026}
+}
 ```
