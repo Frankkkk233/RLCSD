@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eo pipefail
-set -x
+# set -x
 
 # Base script: reads all params from a YAML config and launches verl training.
 # Usage: bash scripts/_run_verl.sh <config.yaml> [extra hydra overrides...]
@@ -66,6 +66,7 @@ EXPERIMENT_NAME=$(Y experiment_name ${METHOD})
 OUTPUT_DIR=$(Y output_dir "")
 VAL_BEFORE=$(Y val_before_train false)
 USE_SWANLAB=$(Y use_swanlab true)
+TENSORBOARD_DIR_BASE=$(Y tensorboard_dir "")
 PRIVILEGED_TEXT_MODE=$(Y privileged_text_mode solution_answer)
 # OPD (plain on-policy distillation) keys; only consumed when METHOD=opd.
 TEACHER_MODEL_PATH=$(Y teacher_model_path "")
@@ -420,7 +421,11 @@ mkdir -p "$DIR"
 if [ "$(resolve_abs_path "$CONFIG")" != "$(resolve_abs_path "$DIR/config.yaml")" ]; then
     cp "$CONFIG" "$DIR/config.yaml"
 fi
-export TENSORBOARD_DIR="${DIR}/tensorboard_log/"
+if [ -n "$TENSORBOARD_DIR_BASE" ] && [ "$TENSORBOARD_DIR_BASE" != "None" ]; then
+    export TENSORBOARD_DIR="${TENSORBOARD_DIR_BASE}/${PROJECT}/${EXP}"
+else
+    export TENSORBOARD_DIR="${DIR}/tensorboard_log/"
+fi
 export VERL_FILE_LOGGER_PATH="${DIR}/metrics.jsonl"
 
 # --- Build algorithm-specific overrides from YAML ---

@@ -1,5 +1,5 @@
 method: opsd_ectr
-model_path: Qwen/Qwen3-4B
+model_path: /mnt/cephfs/data/stable/models/Qwen/Qwen3-4B
 use_lora: false
 
 learning_rate: 1e-6
@@ -54,7 +54,8 @@ output_dir: ./outputs/math_deepmath/Qwen3-4B/opsd_ectr
 data_dir: ./data
 train_dataset: deepmath_filtered_level6_8
 val_dataset: amc23,aime24,aime25
-use_swanlab: true
+use_swanlab: false
 project_name: rlcsd-qwen3_4b-math_deepmath
 experiment_name: qwen3_4b_opsd_ectr
-val_before_train: true
+tensorboard_dir: /mnt/cephfs_processing/shared_tensorboard_log/yuhuan.liu
+val_before_train: false
