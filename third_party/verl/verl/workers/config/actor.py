@@ -145,6 +145,10 @@ class PolicyLossConfig(BaseConfig):
     rlcsd_residual_clip_low: Optional[float] = None
     rlcsd_residual_clip_high: Optional[float] = None
     rlcsd_k_max: Optional[int] = None
+    opsd_ectr_alpha: float = 0.5
+    opsd_ectr_log_w_floor: float = -5.0
+    opsd_ectr_cw_tau: float = 1.0
+    rlsd_ectr_lam: Optional[float] = 0.5
     srpo_beta: Optional[float] = None
 
 

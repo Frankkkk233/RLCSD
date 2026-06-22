@@ -93,6 +93,7 @@ USE_CUSTOM_REWARD_FUNCTION=$(Y use_custom_reward_function true)
 CUSTOM_REWARD_FUNCTION_PATH=$(Y custom_reward_function_path src/verl_reward.py)
 CUSTOM_REWARD_FUNCTION_NAME=$(Y custom_reward_function_name compute_score)
 NCCL_TIMEOUT=$(Y nccl_timeout 7200)
+RAY_NUM_CPUS=$(Y ray_num_cpus 64)
 ROLLOUT_IS=$(Y rollout_is "")
 ROLLOUT_IS_THRESHOLD=$(Y rollout_is_threshold "")
 ROLLOUT_IS_BATCH_NORMALIZE=$(Y rollout_is_batch_normalize "")
@@ -523,6 +524,7 @@ python3 -m $MAIN \
     trainer.save_freq=${SAVE_STEPS} \
     trainer.test_freq=${EVAL_STEPS} \
     trainer.total_epochs=${NUM_EPOCHS} \
+    ray_kwargs.ray_init.num_cpus=${RAY_NUM_CPUS} \
     data.train_files=${TRAIN_FILES} \
     data.val_files=${VAL_FILES} \
     data.train_batch_size=${ROLLOUT_BATCH} \
@@ -550,7 +552,7 @@ python3 -m $MAIN \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
     actor_rollout_ref.actor.ppo_max_token_len_per_gpu=${ACTOR_MAX_TOKEN_LEN} \
     actor_rollout_ref.actor.use_kl_loss=True \
-    actor_rollout_ref.actor.kl_loss_coef=$(if [ -n "$KL_LOSS_COEF" ] && [ "$KL_LOSS_COEF" != "None" ]; then echo "$KL_LOSS_COEF"; else case "$METHOD" in rlsd|sdpo|srpo|opsd|opd) echo "0";; *) echo "0.001";; esac; fi) \
+    actor_rollout_ref.actor.kl_loss_coef=$(if [ -n "$KL_LOSS_COEF" ] && [ "$KL_LOSS_COEF" != "None" ]; then echo "$KL_LOSS_COEF"; else case "$METHOD" in rlsd|rlcsd|sdpo|srpo|opsd|opd) echo "0";; *) echo "0.001";; esac; fi) \
     actor_rollout_ref.actor.kl_loss_type=low_var_kl \
     actor_rollout_ref.actor.entropy_coeff=0 \
     actor_rollout_ref.actor.strategy=fsdp2 \

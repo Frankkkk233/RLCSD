@@ -1806,6 +1806,7 @@ class RayPPOTrainer:
                             actor_batch = batch
                             if hasattr(self, "_prepare_actor_update_batch"):
                                 actor_batch = self._prepare_actor_update_batch(batch)
+                            actor_batch.meta_info["global_steps"] = self.global_steps
                             with marked_timer("update_actor", timing_raw, color="red"):
                                 actor_output = self._update_actor(actor_batch)
                         else:

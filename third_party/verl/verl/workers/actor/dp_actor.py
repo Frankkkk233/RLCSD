@@ -1456,6 +1456,7 @@ class DataParallelPPOActor(BasePPOActor):
                             policy_loss -= entropy_agg * entropy_coeff
 
                     if self.config.use_kl_loss:
+                        micro_batch_metrics["actor/kl_coef"] = self.config.kl_loss_coef
                         ref_log_prob = model_inputs["ref_log_prob"]
                         # compute kl loss
                         kld = kl_penalty(
@@ -1463,9 +1464,9 @@ class DataParallelPPOActor(BasePPOActor):
                         )
                         kl_loss = agg_loss(loss_mat=kld, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
 
-                        policy_loss = policy_loss + kl_loss * self.config.kl_loss_coef
+                        if self.config.kl_loss_coef != 0:
+                            policy_loss = policy_loss + kl_loss * self.config.kl_loss_coef
                         metrics["actor/kl_loss"] += kl_loss.detach().item() * loss_scale_factor
-                        micro_batch_metrics["actor/kl_coef"] = self.config.kl_loss_coef
 
                     if self.config.use_dynamic_bsz:
                         # relative to the dynamic bsz

@@ -200,6 +200,7 @@ def ppo_loss(config: ActorConfig, model_output, data: TensorDict, dp_group=None)
 
     # add kl loss
     if config.use_kl_loss:
+        metrics["kl_coef"] = config.kl_loss_coef
         ref_log_prob = data["ref_log_prob"]
         # compute kl loss
         kld = kl_penalty(logprob=log_prob, ref_logprob=ref_log_prob, kl_penalty=config.kl_loss_type)
@@ -207,9 +208,9 @@ def ppo_loss(config: ActorConfig, model_output, data: TensorDict, dp_group=None)
             loss_mat=kld, loss_mask=response_mask, loss_agg_mode=config.loss_agg_mode, **config.global_batch_info
         )
 
-        policy_loss += kl_loss * config.kl_loss_coef
+        if config.kl_loss_coef != 0:
+            policy_loss += kl_loss * config.kl_loss_coef
         metrics["kl_loss"] = Metric(value=kl_loss, aggregation=metric_aggregation)
-        metrics["kl_coef"] = config.kl_loss_coef
 
     return policy_loss, metrics
 
