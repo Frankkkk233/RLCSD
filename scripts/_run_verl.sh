@@ -552,7 +552,7 @@ python3 -m $MAIN \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
     actor_rollout_ref.actor.ppo_max_token_len_per_gpu=${ACTOR_MAX_TOKEN_LEN} \
     actor_rollout_ref.actor.use_kl_loss=True \
-    actor_rollout_ref.actor.kl_loss_coef=$(if [ -n "$KL_LOSS_COEF" ] && [ "$KL_LOSS_COEF" != "None" ]; then echo "$KL_LOSS_COEF"; else case "$METHOD" in rlsd|rlcsd|sdpo|srpo|opsd|opd) echo "0";; *) echo "0.001";; esac; fi) \
+    actor_rollout_ref.actor.kl_loss_coef=$(if [ -n "$KL_LOSS_COEF" ] && [ "$KL_LOSS_COEF" != "None" ]; then echo "$KL_LOSS_COEF"; else case "$METHOD" in rlsd|rlsd_ectr|sdpo|srpo|opsd|opd) echo "0";; *) echo "0.001";; esac; fi) \
     actor_rollout_ref.actor.kl_loss_type=low_var_kl \
     actor_rollout_ref.actor.entropy_coeff=0 \
     actor_rollout_ref.actor.strategy=fsdp2 \
